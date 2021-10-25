@@ -4,6 +4,7 @@ import software.amazon.awscdk.core.Construct;
 import software.amazon.awscdk.core.RemovalPolicy;
 import software.amazon.awscdk.core.Stack;
 import software.amazon.awscdk.core.StackProps;
+import software.amazon.awscdk.services.ec2.Vpc;
 import software.amazon.awscdk.services.s3.Bucket;
 
 public class HelloCdkStack extends Stack {
@@ -14,7 +15,9 @@ public class HelloCdkStack extends Stack {
     public HelloCdkStack(final Construct scope, final String id, final StackProps props) {
         super(scope, id, props);
 
-        this.cardanoArquitectureBucket();
+        Vpc cardanoVpc = Vpc.Builder.create(this, "cardanoVpc")
+                        .cidr("10.0.0.0/16")
+                        .build();
 
     }
 
