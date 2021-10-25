@@ -3,6 +3,7 @@ package com.myorg;
 import software.amazon.awscdk.core.App;
 import software.amazon.awscdk.core.Environment;
 import software.amazon.awscdk.core.StackProps;
+import software.amazon.awscdk.core.Tags;
 
 import java.util.Arrays;
 
@@ -35,7 +36,7 @@ public class HelloCdkApp {
 
                 // For more information, see https://docs.aws.amazon.com/cdk/latest/guide/environments.html
                 .build());
-
+        Tags.of(app).add("creador","caarzahi");
         app.synth();
     }
 }
