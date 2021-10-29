@@ -4,17 +4,21 @@ import software.amazon.awscdk.core.Construct;
 import software.amazon.awscdk.core.RemovalPolicy;
 import software.amazon.awscdk.core.Stack;
 import software.amazon.awscdk.core.StackProps;
-import software.amazon.awscdk.services.ec2.PublicSubnet;
-import software.amazon.awscdk.services.ec2.Subnet;
-import software.amazon.awscdk.services.ec2.SubnetConfiguration;
 import software.amazon.awscdk.services.ec2.Vpc;
 import software.amazon.awscdk.services.s3.Bucket;
-import software.amazon.awscdk.services.ec2.SubnetType;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class HelloCdkStack extends Stack {
+
+    private static final Logger LOGGER;
+    private static Vpc cardanoVpc;
+
+    static {
+        LOGGER = Logger.getLogger(HelloCdkStack.class.getName());
+    }
+   
     public HelloCdkStack(final Construct scope, final String id) {
         this(scope, id, null);
     }
@@ -22,22 +26,8 @@ public class HelloCdkStack extends Stack {
     public HelloCdkStack(final Construct scope, final String id, final StackProps props) {
         super(scope, id, props);
 
-        SubnetConfiguration subnetConfiguration = SubnetConfiguration.builder()
-                .name("cardanoPublicSubnet")
-                .subnetType(SubnetType.PUBLIC)
-                .cidrMask(28)
-                .build();
+        cardanoVpc = this.configureCardanoNetwork();
 
-        List<SubnetConfiguration> subnetList = new ArrayList<>();
-        subnetList.add(subnetConfiguration);
-
-        Vpc cardanoVpc = Vpc.Builder.create(this, "cardanoVpc")
-                .cidr("10.0.0.0/26")
-                .enableDnsHostnames(false)
-                .maxAzs(4)
-                .subnetConfiguration(subnetList)
-                .vpnGateway(false)
-                .build();
     }
 
     private void cardanoArquitectureBucket () {
@@ -48,7 +38,19 @@ public class HelloCdkStack extends Stack {
                 .build();
     }
 
-    private void configureCardanoNetwork () {
+    private Vpc configureCardanoNetwork () {
 
+        String CIDR="10.0.0.0/24";
+
+        Vpc cardanoVpc = Vpc.Builder.create(this, "cardanoVpc")
+                .cidr(CIDR)
+                .enableDnsHostnames(false)
+                .maxAzs(1)
+                .vpnGateway(false)
+                .build();
+
+        LOGGER.log(Level.INFO, "se creó vpc: ", cardanoVpc.getVpcId());
+
+        return cardanoVpc;
     }
 }
