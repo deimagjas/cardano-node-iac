@@ -13,7 +13,6 @@ import java.util.logging.Logger;
 public class HelloCdkStack extends Stack {
 
     private static final Logger LOGGER;
-    private static Vpc cardanoVpc;
 
     static {
         LOGGER = Logger.getLogger(HelloCdkStack.class.getName());
@@ -26,7 +25,9 @@ public class HelloCdkStack extends Stack {
     public HelloCdkStack(final Construct scope, final String id, final StackProps props) {
         super(scope, id, props);
 
-        cardanoVpc = this.configureCardanoNetwork();
+        Vpc cardanoVpc = this.configureCardanoNetwork();
+
+        
 
     }
 
