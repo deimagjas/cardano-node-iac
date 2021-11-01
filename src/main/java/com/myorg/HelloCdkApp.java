@@ -3,6 +3,7 @@ package com.myorg;
 import software.amazon.awscdk.core.App;
 import software.amazon.awscdk.core.Environment;
 import software.amazon.awscdk.core.StackProps;
+import software.amazon.awscdk.core.Tags;
 
 import java.util.Arrays;
 
@@ -10,7 +11,7 @@ public class HelloCdkApp {
     public static void main(final String[] args) {
         App app = new App();
 
-        new HelloCdkStack(app, "HelloCdkStack", StackProps.builder()
+        new HelloCdkStack(app, "CardanoCdkStack", StackProps.builder()
                 // If you don't specify 'env', this stack will be environment-agnostic.
                 // Account/Region-dependent features and context lookups will not work,
                 // but a single synthesized template can be deployed anywhere.
@@ -35,7 +36,7 @@ public class HelloCdkApp {
 
                 // For more information, see https://docs.aws.amazon.com/cdk/latest/guide/environments.html
                 .build());
-
+        Tags.of(app).add("creador","caarzahi");
         app.synth();
     }
 }
